@@ -25,7 +25,9 @@ public class Move : MonoBehaviour
         Vector3 directionPos = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), transform.position.z); //собирем вектор, в котором храним направление движения по X и Y
         rigidbody2D.MovePosition(rigidbody2D.transform.position + directionPos * speed * Time.fixedDeltaTime); //перемещаем тело, прибавляя к текущим координатам вектор с направлениями
 
-        //rigidbody2D.MoveRotation(rigidbody2D.rotation + distance * 10f * Time.fixedDeltaTime); вращаем тело по оси Z (по кругу на плоскости). 
-        //Нужно реализовать поворот гусеницы за курсором. Я думал пользовать RayCast2D
+        Vector2 mousePositionInGame = Camera.main.ScreenToWorldPoint(Input.mousePosition); //получаем координаты мыши в рамках игры, а не экрана
+        Vector2 moveDirection = (mousePositionInGame - new Vector2(rigidbody2D.transform.position.x, rigidbody2D.transform.position.y)); //получаем направление, в котором вращать
+        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg; //вычисляем угол, на который нужно повернуть тело
+        rigidbody2D.MoveRotation(angle); //вращаем тело по оси Z (по кругу на плоскости). 
     }
 }
